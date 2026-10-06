@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scan the QR</title>
+    
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(circle at top, #d60660 0%, #940439 32%, #b8054a 62%, #ffa9c8 100%);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .card {
+        background: rgba(223, 2, 131, 0.295);
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 32px;
+        padding: 2rem;
+        box-shadow: 0 20px 40px rgba(170, 61, 97, 0.14);
+        text-align: center;
+      }
+
+      img {
+        width: min(70vw, 320px);
+        height: auto;
+        display: block;
+        margin: 0 auto 1rem;
+        border-radius: 20px;
+        background: white;
+        padding: 0.75rem;
+      }
+
+      h1 {
+        margin: 0 0 0.5rem;
+        color: #000000;
+      }
+
+      p {
+        margin: 0;
+        color: #000000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Scan this QR code</h1>
+      <img src="qr-code.png" alt="QR code to open the page" />
+      <p>Scan to pay Via Paymaya, Gotyme</p>
+      
+    </div>
+  </body>
+</html>

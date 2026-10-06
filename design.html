@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For You</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="scene">
+      <div class="glow glow-one"></div>
+      <div class="glow glow-two"></div>
+
+      <section class="bouquet" aria-label="Bouquet of flowers">
+        <div class="stem stem-1"></div>
+        <div class="stem stem-2"></div>
+        <div class="stem stem-3"></div>
+
+        <div class="leaf leaf-1"></div>
+        <div class="leaf leaf-2"></div>
+        <div class="leaf leaf-3"></div>
+        <div class="leaf leaf-4"></div>
+
+        <div class="flower flower-1">
+          <span class="petal petal-1"></span>
+          <span class="petal petal-2"></span>
+          <span class="petal petal-3"></span>
+          <span class="petal petal-4"></span>
+          <span class="center"></span>
+        </div>
+
+        <div class="flower flower-2">
+          <span class="petal petal-1"></span>
+          <span class="petal petal-2"></span>
+          <span class="petal petal-3"></span>
+          <span class="petal petal-4"></span>
+          <span class="center"></span>
+        </div>
+
+        <div class="flower flower-3">
+          <span class="petal petal-1"></span>
+          <span class="petal petal-2"></span>
+          <span class="petal petal-3"></span>
+          <span class="petal petal-4"></span>
+          <span class="center"></span>
+        </div>
+      </section>
+
+      <section class="card" aria-label="Confession message">
+        <p class="eyebrow">A little note for you</p>
+        <h1>hello phoooo....</h1>
+        <p>
+          I’ve been wanting to ask you something, kaso hiya ako.
+        </p>
+        <p class="message">
+          I’d love to spend time with you outside of just random chats.
+          Wanna hang out sometime, eat good food, laugh a little, and just enjoy each other’s company?
+          I think I’d like that a lot.
+        </p>
+        <p class="closing">Let’s go out sometime?</p>
+        <p id="statusMessage" class="status-message" aria-live="polite"></p>
+
+        <div class="answer-box hidden" id="answerBox">
+          <label for="answerInput" class="sr-only">Your answer</label>
+          <textarea id="answerInput" rows="3" placeholder="Type your answer here..."></textarea>
+          <button type="button" class="submit-answer">Submit</button>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="yes-btn">Yes, I’d love to</button>
+          <button type="button" class="ghost maybe-btn">Maybe another day</button>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const yesBtn = document.querySelector('.yes-btn');
+      const maybeBtn = document.querySelector('.maybe-btn');
+      const closing = document.querySelector('.closing');
+      const statusMessage = document.getElementById('statusMessage');
+      const answerBox = document.getElementById('answerBox');
+      const answerInput = document.getElementById('answerInput');
+      const submitAnswerBtn = document.querySelector('.submit-answer');
+
+      const randomQuestions = [
+        'If your pet had a job, what would it do for money?',
+        'Would you rather fight one horse-sized duck or 100 duck-sized horses?',
+        'What’s the weirdest thing you’d absolutely brag about at a party?',
+        'What’s your most chaotic “I can’t believe this happened” story?',
+        'If your life had a theme song, what would it be while you’re running late?',
+        'What embarrassing thing would you do if nobody was watching?',
+        'Which fictional character would you trust to babysit you?',
+        'If your food could talk, what would it say to you?',
+        'What’s the stupidest thing you’ve ever been proud of?',
+        'If your room had a personality, what would it be like?',
+        'What’s the most dramatic way you would react if someone stole your fries?',
+        'Would you rather be stuck in a group chat with your parents or your exes?',
+        'What’s the weirdest talent you secretly have?',
+        'If you had to befriend a toaster, what would you ask it?',
+        'What’s your most suspiciously specific fear?',
+        'If you were a cartoon villain, what would your catchphrase be?',
+        'What’s your most unhinged “I’m totally normal” habit?',
+        'What’s the dumbest thing you’ve ever Googled?',
+        'If your phone had a personality, what would it say when you ignore it?',
+        'What would your perfect disaster movie be called?',
+        'What’s the wildest thing you’ve done for snacks?',
+        'If you got trapped in a mall overnight, what would you do first?',
+        'What’s the most ridiculous thing you’d do if you won 1 million pesos?',
+        'What’s your weirdest “I’m not like this normally” behavior?',
+        'If your shoes could talk, what would they say about you?',
+        'What’s the funniest lie you’ve ever told?',
+        'If you had to be on a reality show, which one would you join?',
+        'What’s your most dramatic morning routine?',
+        'What’s the most ridiculous thing you’ve ever argued about?',
+        'If you had to name your future chaos, what would it be?',
+        'What would your dream absurd job be?',
+        'What’s the silliest way someone has ever made you laugh?',
+        'If your mood had a weather report, what would it be today?',
+        'Would you rather lose your phone or your wallet for a week?',
+        'What’s your top-tier excuse to skip plans?',
+        'What kind of chaos would you cause if you had a free weekend?',
+        'If you were a snack, which one would you be and why?',
+        'What would be your most dramatic entrance into a room?',
+        'What’s the weirdest compliment you’ve ever received?',
+        'What’s your most irrationally specific opinion?',
+        'If your house had a mascot, what would it be?',
+        'Which animal would be the worst roommate?',
+        'What’s the funniest thing your family says when you’re stressed?',
+        'If you had to survive on only one snack for a month, what would it be?',
+        'What’s something you’d do if you were invisible for a day?',
+        'What’s the most random thing you know how to do?',
+        'If your personality had a flavor, what would it taste like?',
+        'What’s the most unhinged thing you’ve said while half asleep?',
+        'If you had to be cursed with one useless superpower, what would it be?',
+        'What’s a reason you’d absolutely leave a party early?',
+        'If your laugh had a sound effect, what would it be?',
+        'What’s your most questionable life decision so far?',
+        'If you had to battle a giant sandwich, how would you win?',
+        'What’s the weirdest thing you think you could pull off in public?',
+        'If your favorite hoodie had a name, what would it be?',
+        'What would your villain origin story be?',
+        'What’s the most dramatic thing you’d do if someone stole your seat?',
+        'If you had to make a fake biography, what would it say?',
+        'What’s your most insane plan for a spontaneous adventure?',
+        'Which cartoon character would you trust with your secrets?',
+        'What’s a weirdly specific thing you’d absolutely win at?',
+        'If you got teleported to another planet, what would you complain about first?',
+        'What’s the weirdest thing you’d do for a free meal?',
+        'If your life had a warning label, what would it say?',
+        'What’s your best “I am absolutely not okay” face?',
+        'If you had to be stuck in one room with a random object, what would it be?',
+        'What’s the most overdramatic thing you’ve ever done in public?',
+        'Which celebrity would be the funniest roommate?',
+        'What’s a skill you have that makes no sense?',
+        'If your dreams had a genre, what would they be?',
+        'What’s your funniest fake excuse for being late?',
+        'If your day had a soundtrack, what song would be the boss battle track?',
+        'What’s your most chaotic “I should be productive” moment?',
+        'If you had to survive a zombie apocalypse with one item, what is it?',
+        'What’s the weirdest item you have in your bag right now?',
+        'If your personality was a meme, what meme would it be?',
+        'What would your first line be in a horror movie?',
+        'What’s the most questionable thing you’ve ever said to a stranger?',
+        'If your friends had to describe you in one sentence, what would they say?',
+        'What’s your most absurd dream job?',
+        'What’s the most ridiculous thing you’d do to impress someone?',
+        'If your mood had a snack, what would it be?',
+        'What’s the weirdest thing you’d hide in a closet?',
+        'If you had to create a fake religion, what would it worship?',
+        'What would be your signature move in a heist movie?',
+        'What’s the funniest possible way to get stuck in traffic?',
+        'If your life was a comedy show, what would the title be?',
+        'What’s the most random thing you’d spend money on right now?',
+        'If you could only say one word for a day, what would it be?',
+        'What’s the most ridiculous thing a stranger has ever said to you?',
+        'If your emotions were a playlist, what songs would be on it?',
+        'What’s the dumbest challenge you’d accept for fun?',
+        'If your pet could text, what would they say to you first?',
+        'What’s the weirdest thing you’ve ever found in the back of a car?',
+        'If the world had no rules for one day, what would you do first?',
+        'What’s your most dramatic reaction to a tiny inconvenience?',
+        'If your coffee could narrate your life, what would it say?',
+        'What’s the worst possible way to start a first date?',
+        'What’s the most chaotic thing you’d do in a grocery store?',
+        'If your phone had a villain arc, what would it be?',
+        'What would your theme song be during a dramatic exit?',
+        'What’s the silliest thing you’ve ever been emotionally invested in?',
+        'If your room had a “do not disturb” sign, what would it say?',
+        'What’s something totally normal that would look bizarre to an alien?',
+        'If your life had a trailer, what would the title be?',
+        'What’s the weirdest thing you’ve ever been scared of for no reason?',
+        'If your name had a side quest, what would it be?',
+        'What’s the funniest thing you’ve ever witnessed in public?',
+        'Which object would be the worst best friend?',
+        'What’s the most ridiculous thing you would do if you were famous for one day?',
+        'If your food had a personality, which one would be the biggest menace?',
+        'What’s the weirdest way you’ve ever felt happy?',
+        'If you had to perform a TikTok dance in public, what song would it be?',
+        'What would your “I’m late and panicking” voice sound like?',
+        'If your life had a cursed item, what would it be?',
+        'What’s the funniest possible way to accidentally win something?',
+        'If you had to narrate your own life, what voice would you use?',
+        'What is the most dramatic thing you would say before eating fries?',
+        'What’s the most chaotic plan you’ve ever made for one day?',
+        'If you could switch lives with any object for a week, what would it be?',
+        'What would your official excuse be for being “too dramatic”?',
+        'If your shadow had a personality, what would it say about you?',
+        'What’s the funniest thing you’ve ever cried laughing about?',
+        'If you had a ridiculous award, what would it be for?',
+        'What would your final boss battle in life look like?',
+        'What’s the weirdest thing you’d say to a stranger in a vending machine line?',
+        'If your heartbeat had a ringtone, what would it be?',
+        'What’s the stupidest thing that still somehow works for you?',
+        'If your awkwardness had a power level, what would it be?',
+        'What’s the funniest “this is why we can’t have nice things” moment ever?',
+        'If a comedian wrote your life story, what would be the chapter title?',
+        'What’s the weirdest thing that would make you instantly trust someone?',
+        'If your bad decisions had a theme song, what would it be?',
+        'What’s your most dramatic thing to say before bedtime?',
+        'If your happiness had a color, what would it be?',
+        'If you had to do an embarrassing public challenge, what would it be?',
+        'What’s the weirdest way you’ve ever avoided doing something?',
+        'If your pet could give relationship advice, what would it say?',
+        'What’s the most hilarious way you could get locked out of your own house?',
+        'If there were a day celebrating your chaos, what would it be called?',
+        'What’s the strangest thing you’ve ever been obsessed with for a week?',
+        'What would your “night of chaos” outfit be?',
+        'If your life was an anime, what would the title be?',
+        'What’s the funniest prank you wish you could pull off?',
+        'What’s a tiny thing that would make your day instantly better?',
+        'If your weirdest habit became a business, what would it sell?',
+        'What’s the dumbest thing your brain says “I need to do this now” about?',
+        'If you had to give your future self a warning label, what would it say?',
+        'What’s the most ridiculous thing you’d do for attention?',
+        'If your laugh was a viral sound, what would everyone call it?',
+        'What’s the funniest possible way to lose a bet?',
+        'If you were forced to make a weird sandwich, what would be in it?',
+        'What’s the most random thing you’ve ever done to impress someone?',
+        'If you had a superpower that only worked when you’re sleepy, what would it be?',
+        'What’s your go-to “I’m not okay but I’m fine” response?',
+        'If your life had a theme park ride, what would it be called?',
+        'What’s the most unserious thing you’ve ever been proud of?',
+        'If your personality had to be turned into a dessert, what would it be?',
+        'What’s the most chaotic but successful plan you’ve ever had?'
+      ];
+
+      yesBtn.addEventListener('click', () => {
+        closing.textContent = 'Yay! Let’s do it soon 💕';
+        statusMessage.textContent = 'Opening your Gmail draft...';
+        yesBtn.textContent = 'I’m in';
+        maybeBtn.textContent = 'Later';
+
+        const recipient = 'yourgmail@gmail.com';
+        const subject = encodeURIComponent('Let’s hang out sometime');
+        const body = encodeURIComponent(
+          'Hey, I’d love to hang out with you sometime.\n\nLet’s grab food, talk, and spend time together. I’m down whenever you are.\n\nSee you soon!'
+        );
+
+        window.open(
+          `https://mail.google.com/mail/?view=cm&fs=1&to=${recipient}&su=${subject}&body=${body}`,
+          '_blank'
+        );
+      });
+
+      maybeBtn.addEventListener('click', () => {
+        const randomQuestion = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
+        closing.textContent = 'Okay, you picked “maybe another day” so you need to answer this first 😌';
+        statusMessage.textContent = randomQuestion;
+        answerBox.classList.add('visible');
+        answerInput.value = '';
+        answerInput.focus();
+        maybeBtn.textContent = 'Ask me another';
+        yesBtn.textContent = 'Still yes';
+      });
+
+      submitAnswerBtn.addEventListener('click', () => {
+        const answer = answerInput.value.trim();
+
+        if (!answer) {
+          statusMessage.textContent = 'No cheating. Answer first 😏';
+          answerInput.focus();
+          return;
+        }
+
+        statusMessage.textContent = 'Nice. Now I know you’re not escaping this 😌';
+        answerBox.classList.remove('visible');
+        answerInput.value = '';
+        maybeBtn.textContent = 'Ask me another';
+      });
+    </script>
+  </body>
+</html>
